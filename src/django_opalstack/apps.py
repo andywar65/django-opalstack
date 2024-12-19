@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DjOpalConfig(AppConfig):
+class DjangoOpalstackConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "dj_opal"
+    name = "django_opalstack"
