@@ -11,10 +11,6 @@ class Token(models.Model):
     key = models.CharField(
         max_length=200,
     )
-    server = models.CharField(
-        max_length=50,
-        default="opal5.opalstack.com",
-    )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
