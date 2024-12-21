@@ -14,3 +14,8 @@ class TokenListView(LoginRequiredMixin, ListView):
     def get_queryset(self) -> QuerySet[Any]:
         qs = Token.objects.filter(user=self.request.user)
         return qs
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["django_opalstack/htmx/token_list.html"]
+        return super().get_template_names()
