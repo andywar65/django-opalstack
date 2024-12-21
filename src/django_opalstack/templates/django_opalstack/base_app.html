@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+<div id="content">
+  {% block content %}
+  {% endblock content %}
+</div>
+{% block extra-js %}
+  <script src="{% static "django_opalstack/js/htmx.min.js" %}"></script>
+{% endblock extra-js %}
