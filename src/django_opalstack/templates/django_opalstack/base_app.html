@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-<div id="content">
+<div id="content" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   {% block content %}
   {% endblock content %}
 </div>

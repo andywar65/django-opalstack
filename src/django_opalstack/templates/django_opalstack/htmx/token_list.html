@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<h1>{% trans "Token List" %}</h1>
+{% if object_list %}
+<ul>
+  {% for token in object_list %}
+    <li>{{ token.name }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>{% trans "No tokens yet" %}</p>
+  <a href="/admin/django_opalstack/token/add/">
+    {% trans "Add Token" %}
+  </a>
