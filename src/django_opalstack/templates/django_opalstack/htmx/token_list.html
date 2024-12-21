@@ -4,7 +4,13 @@
 {% if object_list %}
   <ul>
     {% for token in object_list %}
-      <li>{{ token.name }}</li>
+      <li>
+        <a hx-get="{% url 'django_opalstack:token_detail' pk=token.id %}"
+           hx-target="#content"
+           hx-push-url="true">
+          {{ token.name }}
+        </a>
+      </li>
     {% endfor %}
   </ul>
 {% else %}

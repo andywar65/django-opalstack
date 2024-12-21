@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<h1>{% trans "Token" %}: {{ object.name }}</h1>
+<a href="/admin/django_opalstack/token/{{ object.id }}/change/">
+  {% trans "Modify Token" %}
+</a>
+<a hx-get="{% url 'django_opalstack:token_list' %}"
+   hx-target="#content"
+   hx-push-url="true">
+  {% trans "Back to token list" %}
+</a>
