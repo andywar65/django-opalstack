@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models.query import QuerySet
 from django.http import Http404
 from django.views.generic import DetailView, ListView
+from opalstack.util import filt_one
 
 from .models import Token
 
@@ -106,7 +107,10 @@ class TokenSitesDetailView(TokenDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        context["opal_sites"] = opalapi.sites.list_all(
-            embed=["server", "domains", "primary_domain"]
-        )
+        sites = opalapi.sites.list_all(embed=["server", "domains", "primary_domain"])
+        for site in sites:
+            for route in site["routes"]:
+                app = filt_one(opalapi.apps.list_all(), {"id": route["app"]})
+                route["name"] = app["name"]
+        context["opal_sites"] = sites
         return context

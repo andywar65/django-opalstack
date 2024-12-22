@@ -9,7 +9,7 @@
       <th>{% trans "Server" %}</th>
       <th>{% trans "Domains" %}</th>
       <th>{% trans "Primary Domain" %}</th>
-      <th>{% trans "Routes" %}</th>
+      <th>{% trans "App - URI" %}</th>
       <th>{% trans "Disabled" %}</th>
       <th>{% trans "Generate LE" %}</th>
       <th>{% trans "Redirect" %}</th>
@@ -29,7 +29,7 @@
         <td>{{ opal_site.primary_domain.name }}</td>
         <td>
           {% for route in opal_site.routes %}
-            {{ route.app }} - {{ route.uri }}
+            {{ route.name }} - {{ route.uri }}
           {% endfor %}
         </td>
         <td>{{ opal_site.disabled }}</td>
