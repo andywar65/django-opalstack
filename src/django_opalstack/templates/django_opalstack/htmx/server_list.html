@@ -4,16 +4,16 @@
   <h2>{% trans "Web Servers" %}</h2>
   <table>
     <tr>
-      <th>{% trans "ID" %}</th>
       <th>{% trans "Hostname" %}</th>
+      <th>{% trans "ID" %}</th>
       <th>{% trans "Type" %}</th>
       <th>{% trans "OS" %}</th>
       <th>{% trans "Vendor" %}</th>
     </tr>
     {% for server in web_servers %}
-      <tr>
-        <td>{{ server.id }}</td>
+      <tr id="{{ server.id }}">
         <td>{{ server.hostname }}</td>
+        <td>{{ server.id }}</td>
         <td>{{ server.type }}</td>
         <td>{{ server.os }}</td>
         <td>{{ server.vendor }}</td>

@@ -1,0 +1,35 @@
+{% load i18n %}
+
+{% if apps %}
+  <h2>{% trans "Applications" %}</h2>
+  <table>
+    <tr>
+      <th>{% trans "Name" %}</th>
+      <th>{% trans "ID" %}</th>
+      <th>{% trans "Server" %}</th>
+      <th>{% trans "OS User" %}</th>
+      <th>{% trans "Type" %}</th>
+      <th>{% trans "Port" %}</th>
+      <th>{% trans "Installer URL" %}</th>
+      <th>{% trans "JSON" %}</th>
+      <th>{% trans "State" %}</th>
+      <th>{% trans "Ready" %}</th>
+    </tr>
+    {% for app in apps %}
+      <tr id="{{ app.id }}">
+        <td>{{ app.name }}</td>
+        <td>{{ app.id }}</td>
+        <td>{{ app.server.hostname }}</td>
+        <td>{{ app.osuser_name }}</td>
+        <td>{{ app.type }}</td>
+        <td>{{ app.port }}</td>
+        <td>{{ app.installer_url }}</td>
+        <td>{{ app.json }}</td>
+        <td>{{ app.state }}</td>
+        <td>{{ app.ready }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>{% trans "No applications yet" %}</p>
+{% endif %}

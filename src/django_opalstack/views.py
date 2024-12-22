@@ -66,3 +66,17 @@ class TokenUsersDetailView(TokenDetailView):
         opalapi = opalstack.Api(token=self.object.key)
         context["osusers"] = opalapi.osusers.list_all(embed=["server"])
         return context
+
+
+class TokenAppsDetailView(TokenDetailView):
+
+    def get_template_names(self):
+        if "Hx-Request" not in self.request.headers:
+            raise Http404
+        return ["django_opalstack/htmx/apps_list.html"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        opalapi = opalstack.Api(token=self.object.key)
+        context["apps"] = opalapi.apps.list_all(embed=["server"])
+        return context
