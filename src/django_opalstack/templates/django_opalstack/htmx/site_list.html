@@ -1,0 +1,45 @@
+{% load i18n %}
+
+{% if opal_sites %}
+  <h2>{% trans "Sites" %}</h2>
+  <table>
+    <tr>
+      <th>{% trans "Name" %}</th>
+      <th>{% trans "ID" %}</th>
+      <th>{% trans "Server" %}</th>
+      <th>{% trans "Domains" %}</th>
+      <th>{% trans "Primary Domain" %}</th>
+      <th>{% trans "Routes" %}</th>
+      <th>{% trans "Disabled" %}</th>
+      <th>{% trans "Generate LE" %}</th>
+      <th>{% trans "Redirect" %}</th>
+      <th>{% trans "State" %}</th>
+      <th>{% trans "Ready" %}</th>
+    </tr>
+    {% for opal_site in opal_sites %}
+      <tr id="{{ opal_site.id }}">
+        <td>{{ opal_site.name }}</td>
+        <td>{{ opal_site.id }}</td>
+        <td>{{ opal_site.server.hostname }}</td>
+        <td>
+          {% for domain in opal_site.domains %}
+            {{ domain.name }}
+          {% endfor %}
+        </td>
+        <td>{{ opal_site.primary_domain.name }}</td>
+        <td>
+          {% for route in opal_site.routes %}
+            {{ route.app }} - {{ route.uri }}
+          {% endfor %}
+        </td>
+        <td>{{ opal_site.disabled }}</td>
+        <td>{{ opal_site.generate_le }}</td>
+        <td>{{ opal_site.redirect }}</td>
+        <td>{{ opal_site.state }}</td>
+        <td>{{ opal_site.ready }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>{% trans "No sites yet" %}</p>
+{% endif %}

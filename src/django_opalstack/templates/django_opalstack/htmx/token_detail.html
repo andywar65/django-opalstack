@@ -25,6 +25,20 @@
         {% trans "Application list" %}
       </a>
     </li>
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:domain_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Domain list" %}
+      </a>
+    </li>
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:site_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Site list" %}
+      </a>
+    </li>
   </ul>
   <p id="indicator" class="htmx-indicator" style="color: red">{% trans "Loading..." %}</p>
 </details>

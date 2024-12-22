@@ -59,7 +59,7 @@ class TokenUsersDetailView(TokenDetailView):
     def get_template_names(self):
         if "Hx-Request" not in self.request.headers:
             raise Http404
-        return ["django_opalstack/htmx/users_list.html"]
+        return ["django_opalstack/htmx/user_list.html"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,10 +73,40 @@ class TokenAppsDetailView(TokenDetailView):
     def get_template_names(self):
         if "Hx-Request" not in self.request.headers:
             raise Http404
-        return ["django_opalstack/htmx/apps_list.html"]
+        return ["django_opalstack/htmx/app_list.html"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
         context["apps"] = opalapi.apps.list_all(embed=["server"])
+        return context
+
+
+class TokenDomainsDetailView(TokenDetailView):
+
+    def get_template_names(self):
+        if "Hx-Request" not in self.request.headers:
+            raise Http404
+        return ["django_opalstack/htmx/domain_list.html"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        opalapi = opalstack.Api(token=self.object.key)
+        context["domains"] = opalapi.domains.list_all()
+        return context
+
+
+class TokenSitesDetailView(TokenDetailView):
+
+    def get_template_names(self):
+        if "Hx-Request" not in self.request.headers:
+            raise Http404
+        return ["django_opalstack/htmx/site_list.html"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        opalapi = opalstack.Api(token=self.object.key)
+        context["opal_sites"] = opalapi.sites.list_all(
+            embed=["server", "domains", "primary_domain"]
+        )
         return context
