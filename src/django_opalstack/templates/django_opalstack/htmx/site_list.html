@@ -32,7 +32,13 @@
             <td>
               <ul>
                 {% for route in opal_site.routes %}
-                  <li>{{ route.app }} - {{ route.uri }}</li>
+                  <li><a
+                    href="#"
+                    hx-get="{% url 'django_opalstack:app_detail' pk=object.id %}?app_id={{ route.app }}"
+                    hx-swap="outerHTML"
+                    hx-indicator="#indicator">
+                    {{ route.app }}
+                  </a> - {{ route.uri }}</li>
                 {% endfor %}
               </ul>
             </td>

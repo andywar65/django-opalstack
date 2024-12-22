@@ -121,9 +121,11 @@ class TokenApplicationDetailView(TokenDetailView):
         return ["django_opalstack/htmx/app_detail.html"]
 
     def get_context_data(self, **kwargs):
-        if "app_id" not in kwargs:
+        if "app_id" not in self.request.GET:
             raise Http404
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        context["app"] = filt_one(opalapi.apps.list_all(), {"id": kwargs["app_id"]})
+        context["app"] = filt_one(
+            opalapi.apps.list_all(), {"id": self.request.GET["app_id"]}
+        )
         return context
