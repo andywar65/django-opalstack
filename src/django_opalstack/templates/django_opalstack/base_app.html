@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 
-<div id="content" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-  foo
-  {% block content %}
-  {% endblock content %}
-</div>
+{% block content %}
+  <div id="opal-content" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% block opal-content %}
+    {% endblock opal-content %}
+  </div>
+{% endblock content %}
 {% block extra-js %}
   <script src="{% static "django_opalstack/js/htmx.min.js" %}"></script>
 {% endblock extra-js %}

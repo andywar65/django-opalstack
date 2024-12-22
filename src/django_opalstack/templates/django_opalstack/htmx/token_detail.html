@@ -1,11 +1,18 @@
 {% load i18n %}
 
-<h1>{% trans "Token" %}: {{ object.name }}</h1>
-<a href="/admin/django_opalstack/token/{{ object.id }}/change/">
-  {% trans "Modify Token" %}
-</a>
-<a hx-get="{% url 'django_opalstack:token_list' %}"
-   hx-target="#content"
-   hx-push-url="true">
-  {% trans "Back to token list" %}
-</a>
+<h1>{% trans "Token" %}: <i>{{ object.name }}</i></h1>
+<ul>
+  <li>
+    <a href="/admin/django_opalstack/token/{{ object.id }}/change/">
+      {% trans "Modify Token" %}
+    </a>
+  </li>
+  <li>
+    <a href="#"
+       hx-get="{% url 'django_opalstack:token_list' %}"
+       hx-target="#opal-content"
+       hx-push-url="true">
+      {% trans "Back to token list" %}
+    </a>
+  </li>
+</ul>
