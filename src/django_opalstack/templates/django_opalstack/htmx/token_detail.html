@@ -10,6 +10,13 @@
     </a>
   </li>
   <li>
+    <a href="#"
+       hx-get="{% url 'django_opalstack:user_list' pk=object.id %}"
+       hx-target="#opal-inner">
+      {% trans "Os Users list" %}
+    </a>
+  </li>
+  <li>
     <a href="/admin/django_opalstack/token/{{ object.id }}/change/">
       {% trans "Modify Token" %}
     </a>
