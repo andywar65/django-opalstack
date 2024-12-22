@@ -107,10 +107,23 @@ class TokenSitesDetailView(TokenDetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        sites = opalapi.sites.list_all(embed=["server", "domains", "primary_domain"])
-        for site in sites:
-            for route in site["routes"]:
-                app = filt_one(opalapi.apps.list_all(), {"id": route["app"]})
-                route["name"] = app["name"]
-        context["opal_sites"] = sites
+        context["opal_sites"] = opalapi.sites.list_all(
+            embed=["server", "domains", "primary_domain"]
+        )
+        return context
+
+
+class TokenApplicationDetailView(TokenDetailView):
+
+    def get_template_names(self):
+        if "Hx-Request" not in self.request.headers:
+            raise Http404
+        return ["django_opalstack/htmx/app_detail.html"]
+
+    def get_context_data(self, **kwargs):
+        if "app_id" not in kwargs:
+            raise Http404
+        context = super().get_context_data(**kwargs)
+        opalapi = opalstack.Api(token=self.object.key)
+        context["app"] = filt_one(opalapi.apps.list_all(), {"id": kwargs["app_id"]})
         return context
