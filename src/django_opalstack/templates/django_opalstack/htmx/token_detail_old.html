@@ -1,0 +1,61 @@
+{% load i18n %}
+
+<h1>{% trans "(((Opalstack Token" %}: <i>{{ object.name }}</i></h1>
+<details>
+  <summary>{% trans "Requests" %}</summary>
+  <ul hx-indicator="#indicator">
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:server_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Web server list" %}
+      </a>
+    </li>
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:user_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Os Users list" %}
+      </a>
+    </li>
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:app_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Application list" %}
+      </a>
+    </li>
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:domain_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Domain list" %}
+      </a>
+    </li>
+    <li>
+      <a href="#"
+         hx-get="{% url 'django_opalstack:site_list' pk=object.id %}"
+         hx-target="#opal-inner">
+        {% trans "Site list" %}
+      </a>
+    </li>
+  </ul>
+  <p id="indicator" class="htmx-indicator" style="color: red">{% trans "Loading..." %}</p>
+</details>
+<ul>
+  <li>
+    <a href="/admin/django_opalstack/token/{{ object.id }}/change/">
+      {% trans "Modify Token" %}
+    </a>
+  </li>
+  <li>
+    <a href="#"
+       hx-get="{% url 'django_opalstack:token_list' %}"
+       hx-target="#opal-content"
+       hx-push-url="true">
+      {% trans "Back to token list" %}
+    </a>
+  </li>
+</ul>
+<div id="opal-inner">
+</div>
