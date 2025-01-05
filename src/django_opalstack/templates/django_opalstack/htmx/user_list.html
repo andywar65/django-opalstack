@@ -1,25 +1,29 @@
 {% load i18n %}
 
-{% if osusers %}
-  <h2>{% trans "Os Users" %}</h2>
-  <table>
-    <tr>
-      <th>{% trans "Name" %}</th>
-      <th>{% trans "ID" %}</th>
-      <th>{% trans "Server" %}</th>
-      <th>{% trans "State" %}</th>
-      <th>{% trans "Ready" %}</th>
-    </tr>
+<table style="width: 100%">
+  <tr>
+    <th>{% trans "OS users" %}</th>
+    <th>{% trans "Applications" %}</th>
+  </tr>
+  {% if osusers %}
     {% for osuser in osusers %}
-      <tr id="{{ osuser.id }}">
-        <td>{{ osuser.name }}</td>
-        <td>{{ osuser.id }}</td>
-        <td>{{ osuser.server.hostname }}</td>
-        <td>{{ osuser.state }}</td>
-        <td>{{ osuser.ready }}</td>
+      <tr>
+        <td>
+          <details>
+            <summary>{{ osuser.name }}</summary>
+            <ul>
+              <li>{% trans "ID" %}: {{ osuser.id }}</li>
+              <li>{% trans "State" %}: {{ osuser.state }}</li>
+              <li>{% trans "Ready" %}: {{ osuser.ready }}</li>
+            </ul>
+          </details>
+        </td>
+        <td>
+          {% trans "Get applications" %}
+        </td>
       </tr>
     {% endfor %}
-  </table>
-{% else %}
-  <p>{% trans "No OS Users yet" %}</p>
-{% endif %}
+  {% else %}
+    <tr><td>{% trans "No OS Users yet" %}</td><td></td></tr>
+  {% endif %}
+</table>
