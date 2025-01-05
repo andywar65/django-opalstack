@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models.query import QuerySet
 from django.http import Http404
 from django.views.generic import DetailView, ListView
-from opalstack.util import filt_one
+from opalstack.util import filt, filt_one
 
 from .models import Token
 
@@ -70,9 +70,15 @@ class TokenUsersDetailView(TokenDetailView):
         return ["django_opalstack/htmx/user_list.html"]
 
     def get_context_data(self, **kwargs):
+        if "server_id" not in self.request.GET:
+            raise Http404
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        context["osusers"] = opalapi.osusers.list_all(embed=["server"])
+        print(self.request.GET["server_id"])
+        context["osusers"] = filt(
+            opalapi.osusers.list_all(),
+            {"server.hostname": self.request.GET["server_id"]},
+        )
         return context
 
 

@@ -42,7 +42,7 @@
         <td>
           <a
             href="#"
-            hx-get="{% url 'django_opalstack:user_list' pk=object.id %}"
+            hx-get="{% url 'django_opalstack:user_list' pk=object.id %}?server_id={{ server.hostname }}"
             hx-swap="outerHTML"
             hx-indicator="#opal-indicator">
             {% trans "Get OS users" %}
