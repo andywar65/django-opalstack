@@ -74,10 +74,9 @@ class TokenUsersDetailView(TokenDetailView):
             raise Http404
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        print(self.request.GET["server_id"])
         context["osusers"] = filt(
             opalapi.osusers.list_all(),
-            {"server.hostname": self.request.GET["server_id"]},
+            {"server": {"hostname": self.request.GET["server_id"]}},
         )
         return context
 
