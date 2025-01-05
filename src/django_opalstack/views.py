@@ -76,7 +76,7 @@ class TokenUsersDetailView(TokenDetailView):
         opalapi = opalstack.Api(token=self.object.key)
         context["osusers"] = filt(
             opalapi.osusers.list_all(),
-            {"server": {"hostname": self.request.GET["server_id"]}},
+            {"server": self.request.GET["server_id"]},
         )
         return context
 
