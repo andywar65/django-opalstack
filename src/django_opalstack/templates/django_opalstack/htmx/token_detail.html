@@ -24,4 +24,32 @@
     <th>
     </th>
   </tr>
+  {% if web_servers %}
+    {% for server in web_servers %}
+      <tr>
+        <td>
+          <details>
+            <summary>{{ server.hostname }}</summary>
+            <ul>
+              <li>{% trans "ID" %}: {{ server.id }}</li>
+              <li>{% trans "Type" %}: {{ server.type }}</li>
+              <li>{% trans "OS" %}: {{ server.os }}</li>
+              <li>{% trans "Vendor" %}: {{ server.vendor }}</li>
+            </ul>
+          </details>
+        </td>
+        <td>
+
+        </td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      <td>
+        {% trans "No web servers yet" %}
+      </td>
+      <td>
+      </td>
+    </tr>
+  {% endif %}
 </table>
