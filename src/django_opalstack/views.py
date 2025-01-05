@@ -89,9 +89,17 @@ class TokenAppsDetailView(TokenDetailView):
         return ["django_opalstack/htmx/app_list.html"]
 
     def get_context_data(self, **kwargs):
+        if "osuser_name" not in self.request.GET:
+            raise Http404
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        context["apps"] = opalapi.apps.list_all(embed=["server"])
+        context["apps"] = filt(
+            opalapi.apps.list_all(),
+            {
+                "server": self.request.GET["server_id"],
+                "osuser_name": self.request.GET["osuser_name"],
+            },
+        )
         return context
 
 

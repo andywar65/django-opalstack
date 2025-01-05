@@ -2,8 +2,8 @@
 
 <table style="width: 100%">
   <tr>
-    <th>{% trans "OS users" %}</th>
-    <th>{% trans "Applications" %}</th>
+    <th style="width: 50%">{% trans "OS users" %}</th>
+    <th style="width: 50%">{% trans "Applications" %}</th>
   </tr>
   {% if osusers %}
     {% for osuser in osusers %}
@@ -19,7 +19,13 @@
           </details>
         </td>
         <td>
-          {% trans "Get applications" %}
+          <a
+            href="#"
+            hx-get="{% url 'django_opalstack:app_list' pk=object.id %}?server_id={{ osuser.server }}&osuser_name={{ osuser.name }}"
+            hx-swap="outerHTML"
+            hx-indicator="#opal-indicator">
+            {% trans "Get applications" %}
+          </a>
         </td>
       </tr>
     {% endfor %}
