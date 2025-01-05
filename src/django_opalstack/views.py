@@ -48,6 +48,7 @@ class TokenDetailView(LoginRequiredMixin, DetailView):
 
 
 class TokenServerDetailView(TokenDetailView):
+    # TODO this view may be erased
 
     def get_template_names(self):
         if "Hx-Request" not in self.request.headers:
