@@ -39,6 +39,9 @@ class TokenDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
         context["web_servers"] = opalapi.servers.list_all()["web_servers"]
+        context["domains"] = filt(
+            opalapi.domains.list_all(), {"is_valid_hostname": True}
+        )
         return context
 
     def get_template_names(self):
@@ -78,7 +81,6 @@ class TokenUsersDetailView(TokenDetailView):
             opalapi.osusers.list_all(),
             {"server": self.request.GET["server_id"]},
         )
-        context["domains"] = opalapi.domains.list_all()
         return context
 
 
