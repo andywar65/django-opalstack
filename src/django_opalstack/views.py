@@ -50,21 +50,6 @@ class TokenDetailView(LoginRequiredMixin, DetailView):
         return super().get_template_names()
 
 
-class TokenServerDetailView(TokenDetailView):
-    # TODO this view may be erased
-
-    def get_template_names(self):
-        if "Hx-Request" not in self.request.headers:
-            raise Http404
-        return ["django_opalstack/htmx/server_list.html"]
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        opalapi = opalstack.Api(token=self.object.key)
-        context["web_servers"] = opalapi.servers.list_all()["web_servers"]
-        return context
-
-
 class TokenUsersDetailView(TokenDetailView):
 
     def get_template_names(self):
@@ -103,21 +88,6 @@ class TokenAppsDetailView(TokenDetailView):
                 "osuser_name": self.request.GET["osuser_name"],
             },
         )
-        return context
-
-
-class TokenDomainsDetailView(TokenDetailView):
-    # TODO delete this view
-
-    def get_template_names(self):
-        if "Hx-Request" not in self.request.headers:
-            raise Http404
-        return ["django_opalstack/htmx/domain_list.html"]
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        opalapi = opalstack.Api(token=self.object.key)
-        context["domains"] = opalapi.domains.list_all()
         return context
 
 
