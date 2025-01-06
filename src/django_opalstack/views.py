@@ -78,6 +78,7 @@ class TokenUsersDetailView(TokenDetailView):
             opalapi.osusers.list_all(),
             {"server": self.request.GET["server_id"]},
         )
+        context["domains"] = opalapi.domains.list_all()
         return context
 
 
@@ -104,6 +105,7 @@ class TokenAppsDetailView(TokenDetailView):
 
 
 class TokenDomainsDetailView(TokenDetailView):
+    # TODO delete this view
 
     def get_template_names(self):
         if "Hx-Request" not in self.request.headers:

@@ -1,25 +1,53 @@
 {% load i18n %}
 
-{% if web_servers %}
-  <h2>{% trans "Web Servers" %}</h2>
-  <table>
-    <tr>
-      <th>{% trans "Hostname" %}</th>
-      <th>{% trans "ID" %}</th>
-      <th>{% trans "Type" %}</th>
-      <th>{% trans "OS" %}</th>
-      <th>{% trans "Vendor" %}</th>
-    </tr>
+<table style="width: 100%; border: 1px solid black; border-collapse: collapse">
+  <tr>
+    <th style="width: 33%">
+      {% trans "Web servers" %}
+    </th>
+    <th>
+    </th>
+  </tr>
+  {% if web_servers %}
     {% for server in web_servers %}
-      <tr id="{{ server.id }}">
-        <td>{{ server.hostname }}</td>
-        <td>{{ server.id }}</td>
-        <td>{{ server.type }}</td>
-        <td>{{ server.os }}</td>
-        <td>{{ server.vendor }}</td>
+      <tr>
+        <td>
+          <details>
+            <summary>{{ server.hostname }}</summary>
+            <ul>
+              <li>{% trans "ID" %}: {{ server.id }}</li>
+              <li>{% trans "Type" %}: {{ server.type }}</li>
+              <li>{% trans "OS" %}: {{ server.os }}</li>
+              <li>{% trans "Vendor" %}: {{ server.vendor }}</li>
+            </ul>
+          </details>
+        </td>
+        <td>
+          <a
+            href="#"
+            hx-get="{% url 'django_opalstack:user_list' pk=object.id %}?server_id={{ server.id }}"
+            hx-swap="outerHTML"
+            hx-indicator="#opal-indicator">
+            {% trans "Get OS users" %}
+          </a>
+          <br>
+          <a
+            href="#"
+            hx-get="{% url 'django_opalstack:site_list' pk=object.id %}?server_id={{ server.id }}"
+            hx-swap="outerHTML"
+            hx-indicator="#opal-indicator">
+            {% trans "Get Sites" %}
+          </a>
+        </td>
       </tr>
     {% endfor %}
-  </table>
-{% else %}
-  <p>{% trans "No web servers yet" %}</p>
-{% endif %}
+  {% else %}
+    <tr>
+      <td>
+        {% trans "No web servers yet" %}
+      </td>
+      <td>
+      </td>
+    </tr>
+  {% endif %}
+</table>
