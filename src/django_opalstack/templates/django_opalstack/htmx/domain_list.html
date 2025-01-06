@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<table style="width: 100%; border: 1px solid black; border-collapse: collapse">
+<table style="width: 33%; border: 1px solid black; border-collapse: collapse">
   <tr><th>{% trans "Domains (is_valid_hostname=True)" %}</th></tr>
   {% if domains %}
     {% for domain in domains %}
@@ -12,7 +12,13 @@
             </summary>
             <ul>
               <li>{% trans "ID" %}: {{ domain.id }}</li>
-              <li>{% trans "DKIM record" %}: {{ domain.dkim_record }}</li>
+              <li>
+                {% trans "DKIM record" %}:
+                <details>
+                  <summary>{% trans "(Show / Hide)" %}</summary>
+                  {{ domain.dkim_record }}
+                </details>
+              </li>
               <li>{% trans "State" %}: {{ domain.state }}</li>
               <li>{% trans "Ready" %}: {{ domain.ready }}</li>
             </ul>
