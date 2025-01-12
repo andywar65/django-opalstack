@@ -42,13 +42,6 @@ Repository = "https://github.com/andywar65/django-opalstack"
 
 [project.optional-dependencies]
 dev = [
-    "build",
-    "twine",
     "coverage",
     "environs[django]",
-    "psycopg[binary,pool]",
-]
-test = [
-    "environs[django]",
-    "psycopg[binary,pool]",
 ]
