@@ -66,7 +66,7 @@ class OpalstackViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
-    def test_impostor_status_code(self):
+    def test_impostor_login_status_code(self):
         self.client.login(username="impostor", password="p4s5w0r6")
         response = self.client.get(
             reverse(
@@ -110,3 +110,14 @@ class OpalstackViewTest(TestCase):
             )
         )
         self.assertEqual(response.status_code, 403)
+
+    def test_boss_login_status_code(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:token_detail",
+                kwargs={"pk": token.id},
+            )
+        )
+        self.assertEqual(response.status_code, 200)
