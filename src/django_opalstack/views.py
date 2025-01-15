@@ -99,10 +99,13 @@ class TokenSitesDetailView(TokenDetailView):
         return ["django_opalstack/htmx/site_list.html"]
 
     def get_context_data(self, **kwargs):
+        if "server_id" not in self.request.GET:
+            raise Http404
         context = super().get_context_data(**kwargs)
         opalapi = opalstack.Api(token=self.object.key)
-        context["opal_sites"] = opalapi.sites.list_all(
-            embed=["server", "domains", "primary_domain"]
+        context["opal_sites"] = filt(
+            opalapi.sites.list_all(embed=["domains", "primary_domain"]),
+            {"server": self.request.GET["server_id"]},
         )
         return context
 

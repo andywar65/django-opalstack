@@ -10,6 +10,7 @@ env.read_env()
 OPAL_KEY = env.str("OPAL_KEY")
 SERVER_ID = env.str("SERVER_ID")
 USER_ID = env.str("USER_ID")
+USER_NAME = env.str("USER_NAME")
 APP_ID = env.str("APP_ID")
 
 
@@ -198,3 +199,57 @@ class OpalstackViewTest(TestCase):
         self.assertTemplateUsed(response, "django_opalstack/htmx/user_list.html")
         # test context
         self.assertTrue("osusers" in response.context)
+
+    def test_boss_login_app_list_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:app_list",
+                kwargs={"pk": token.id},
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test status code no osuser name
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:app_list",
+                kwargs={"pk": token.id},
+            )
+            + f"?server_id={SERVER_ID}&osuser_name={USER_NAME}",
+            headers={"Hx-Request": "true"},
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/app_list.html")
+        # test context
+        self.assertTrue("apps" in response.context)
+
+    def test_boss_login_site_list_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:site_list",
+                kwargs={"pk": token.id},
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test status code no server id
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:site_list",
+                kwargs={"pk": token.id},
+            )
+            + f"?server_id={SERVER_ID}",
+            headers={"Hx-Request": "true"},
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/site_list.html")
+        # test context
+        self.assertTrue("opal_sites" in response.context)
