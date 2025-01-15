@@ -8,6 +8,9 @@ from django_opalstack.models import Token
 env = Env()
 env.read_env()
 OPAL_KEY = env.str("OPAL_KEY")
+SERVER_ID = env.str("SERVER_ID")
+USER_ID = env.str("USER_ID")
+APP_ID = env.str("APP_ID")
 
 
 @override_settings(DEBUG=False)
@@ -167,4 +170,17 @@ class OpalstackViewTest(TestCase):
                 kwargs={"pk": token.id},
             )
         )
+        self.assertEqual(response.status_code, 404)
+
+    def test_boss_login_user_list_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:user_list",
+                kwargs={"pk": token.id},
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test status code no server id
         self.assertEqual(response.status_code, 404)
