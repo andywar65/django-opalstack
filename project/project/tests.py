@@ -184,3 +184,17 @@ class OpalstackViewTest(TestCase):
         )
         # test status code no server id
         self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:user_list",
+                kwargs={"pk": token.id},
+            )
+            + f"?server_id={SERVER_ID}",
+            headers={"Hx-Request": "true"},
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/user_list.html")
+        # test context
+        self.assertTrue("osusers" in response.context)
