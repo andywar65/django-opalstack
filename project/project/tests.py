@@ -253,3 +253,30 @@ class OpalstackViewTest(TestCase):
         self.assertTemplateUsed(response, "django_opalstack/htmx/site_list.html")
         # test context
         self.assertTrue("opal_sites" in response.context)
+
+    def test_boss_login_app_detail_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:app_detail",
+                kwargs={"pk": token.id},
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test status code no app id
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:app_detail",
+                kwargs={"pk": token.id},
+            )
+            + f"?app_id={APP_ID}",
+            headers={"Hx-Request": "true"},
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/app_detail.html")
+        # test context
+        self.assertTrue("app" in response.context)
