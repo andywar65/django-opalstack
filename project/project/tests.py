@@ -78,6 +78,8 @@ class OpalstackViewTest(TestCase):
             )
         )
         self.assertEqual(response.status_code, 200)
+        # test that queryset is empty
+        self.assertFalse(response.context["object_list"].exists())
         token = Token.objects.get(name="test_token")
         response = self.client.get(
             reverse(
@@ -115,6 +117,28 @@ class OpalstackViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 403)
 
+    def test_boss_login_token_list_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:token_list",
+            )
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test that queryset is empty
+        self.assertTrue(response.context["object_list"].exists())
+        # test template
+        self.assertTemplateUsed(response, "django_opalstack/token_list.html")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:token_list",
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/token_list.html")
+
     def test_boss_login_token_detail_view(self):
         self.client.login(username="boss", password="p4s5w0r6")
         token = Token.objects.get(name="test_token")
@@ -139,26 +163,6 @@ class OpalstackViewTest(TestCase):
         self.assertTemplateUsed(response, "django_opalstack/htmx/token_detail.html")
         # test context
         self.assertTrue("web_servers" in response.context)
-
-    def test_boss_login_token_list_view(self):
-        self.client.login(username="boss", password="p4s5w0r6")
-        response = self.client.get(
-            reverse(
-                "django_opalstack:token_list",
-            )
-        )
-        # test status code
-        self.assertEqual(response.status_code, 200)
-        # test template
-        self.assertTemplateUsed(response, "django_opalstack/token_list.html")
-        response = self.client.get(
-            reverse(
-                "django_opalstack:token_list",
-            ),
-            headers={"Hx-Request": "true"},
-        )
-        # test htmx template
-        self.assertTemplateUsed(response, "django_opalstack/htmx/token_list.html")
 
     def test_boss_login_no_htmx(self):
         self.client.login(username="boss", password="p4s5w0r6")
