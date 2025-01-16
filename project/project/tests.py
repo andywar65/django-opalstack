@@ -140,6 +140,26 @@ class OpalstackViewTest(TestCase):
         # test context
         self.assertTrue("web_servers" in response.context)
 
+    def test_boss_login_token_list_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:token_list",
+            )
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test template
+        self.assertTemplateUsed(response, "django_opalstack/token_list.html")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:token_list",
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/token_list.html")
+
     def test_boss_login_no_htmx(self):
         self.client.login(username="boss", password="p4s5w0r6")
         token = Token.objects.get(name="test_token")
