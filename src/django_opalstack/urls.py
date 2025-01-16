@@ -4,6 +4,7 @@ from .views import (
     TokenApplicationDetailView,
     TokenAppsDetailView,
     TokenDetailView,
+    TokenDomainsDetailView,
     TokenListView,
     TokenSitesDetailView,
     TokenUsersDetailView,
@@ -16,6 +17,7 @@ urlpatterns = [
     path("token/<pk>/users/", TokenUsersDetailView.as_view(), name="user_list"),
     path("token/<pk>/apps/", TokenAppsDetailView.as_view(), name="app_list"),
     path("token/<pk>/sites/", TokenSitesDetailView.as_view(), name="site_list"),
+    path("token/<pk>/domains/", TokenDomainsDetailView.as_view(), name="domain_list"),
     path(
         "token/<pk>/application/",
         TokenApplicationDetailView.as_view(),
