@@ -164,45 +164,6 @@ class OpalstackViewTest(TestCase):
         # test context
         self.assertTrue("web_servers" in response.context)
 
-    def test_boss_login_no_htmx(self):
-        self.client.login(username="boss", password="p4s5w0r6")
-        token = Token.objects.get(name="test_token")
-        response = self.client.get(
-            reverse(
-                "django_opalstack:user_list",
-                kwargs={"pk": token.id},
-            )
-        )
-        self.assertEqual(response.status_code, 404)
-        response = self.client.get(
-            reverse(
-                "django_opalstack:app_list",
-                kwargs={"pk": token.id},
-            )
-        )
-        self.assertEqual(response.status_code, 404)
-        response = self.client.get(
-            reverse(
-                "django_opalstack:site_list",
-                kwargs={"pk": token.id},
-            )
-        )
-        self.assertEqual(response.status_code, 404)
-        response = self.client.get(
-            reverse(
-                "django_opalstack:domain_list",
-                kwargs={"pk": token.id},
-            )
-        )
-        self.assertEqual(response.status_code, 404)
-        response = self.client.get(
-            reverse(
-                "django_opalstack:app_detail",
-                kwargs={"pk": token.id},
-            )
-        )
-        self.assertEqual(response.status_code, 404)
-
     def test_boss_login_user_list_view(self):
         self.client.login(username="boss", password="p4s5w0r6")
         token = Token.objects.get(name="test_token")
@@ -214,6 +175,15 @@ class OpalstackViewTest(TestCase):
             headers={"Hx-Request": "true"},
         )
         # test status code no server id
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:user_list",
+                kwargs={"pk": token.id},
+            )
+            + f"?server_id={SERVER_ID}",
+        )
+        # test status code no htmx
         self.assertEqual(response.status_code, 404)
         response = self.client.get(
             reverse(
@@ -248,6 +218,15 @@ class OpalstackViewTest(TestCase):
                 kwargs={"pk": token.id},
             )
             + f"?server_id={SERVER_ID}&osuser_name={USER_NAME}",
+        )
+        # test status code no htmx
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:app_list",
+                kwargs={"pk": token.id},
+            )
+            + f"?server_id={SERVER_ID}&osuser_name={USER_NAME}",
             headers={"Hx-Request": "true"},
         )
         # test status code
@@ -275,6 +254,15 @@ class OpalstackViewTest(TestCase):
                 kwargs={"pk": token.id},
             )
             + f"?server_id={SERVER_ID}",
+        )
+        # test status code no htmx
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:site_list",
+                kwargs={"pk": token.id},
+            )
+            + f"?server_id={SERVER_ID}",
             headers={"Hx-Request": "true"},
         )
         # test status code
@@ -287,6 +275,14 @@ class OpalstackViewTest(TestCase):
     def test_boss_login_domain_list_view(self):
         self.client.login(username="boss", password="p4s5w0r6")
         token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:domain_list",
+                kwargs={"pk": token.id},
+            ),
+        )
+        # test status code no htmx
+        self.assertEqual(response.status_code, 404)
         response = self.client.get(
             reverse(
                 "django_opalstack:domain_list",
@@ -312,6 +308,15 @@ class OpalstackViewTest(TestCase):
             headers={"Hx-Request": "true"},
         )
         # test status code no app id
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:app_detail",
+                kwargs={"pk": token.id},
+            )
+            + f"?app_id={APP_ID}",
+        )
+        # test status code no htmx
         self.assertEqual(response.status_code, 404)
         response = self.client.get(
             reverse(
