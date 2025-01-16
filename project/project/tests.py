@@ -139,7 +139,6 @@ class OpalstackViewTest(TestCase):
         self.assertTemplateUsed(response, "django_opalstack/htmx/token_detail.html")
         # test context
         self.assertTrue("web_servers" in response.context)
-        self.assertTrue("domains" in response.context)
 
     def test_boss_login_no_htmx(self):
         self.client.login(username="boss", password="p4s5w0r6")
@@ -161,6 +160,13 @@ class OpalstackViewTest(TestCase):
         response = self.client.get(
             reverse(
                 "django_opalstack:site_list",
+                kwargs={"pk": token.id},
+            )
+        )
+        self.assertEqual(response.status_code, 404)
+        response = self.client.get(
+            reverse(
+                "django_opalstack:domain_list",
                 kwargs={"pk": token.id},
             )
         )
@@ -253,6 +259,23 @@ class OpalstackViewTest(TestCase):
         self.assertTemplateUsed(response, "django_opalstack/htmx/site_list.html")
         # test context
         self.assertTrue("opal_sites" in response.context)
+
+    def test_boss_login_domain_list_view(self):
+        self.client.login(username="boss", password="p4s5w0r6")
+        token = Token.objects.get(name="test_token")
+        response = self.client.get(
+            reverse(
+                "django_opalstack:domain_list",
+                kwargs={"pk": token.id},
+            ),
+            headers={"Hx-Request": "true"},
+        )
+        # test status code
+        self.assertEqual(response.status_code, 200)
+        # test htmx template
+        self.assertTemplateUsed(response, "django_opalstack/htmx/domain_list.html")
+        # test context
+        self.assertTrue("domains" in response.context)
 
     def test_boss_login_app_detail_view(self):
         self.client.login(username="boss", password="p4s5w0r6")
