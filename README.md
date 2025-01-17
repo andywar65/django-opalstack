@@ -1,7 +1,7 @@
 # django-opalstack
 Django interface to Opalstack python API
 ## What is (((Opalstack?
-[(((Opalstack.com](https://opalstack.com) is developer friendly hosting company. It has powerful [API](https://my.opalstack.com/api/v1/doc/) that enables full control over one's hosting environment. A [python wrapper](https://github.com/opalstack/opalstack-python) is provided for the API.
+[(((Opalstack.com](https://opalstack.com) is a developer friendly hosting company. It has a powerful [API](https://my.opalstack.com/api/v1/doc/) that enables full control over one's hosting environment. A [python wrapper](https://github.com/opalstack/opalstack-python) is provided for the API.
 ## Requirements
 This app is tested on Django 5.1 and Python 3.12. It requires the aforementioned python API and the [requests](https://requests.readthedocs.io/en/latest/) library. [HTMX](https://htmx.org) is injected for smooth interactions (JavaScript must be enabled in your browser).
 ## Installation from PyPI
