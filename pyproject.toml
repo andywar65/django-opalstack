@@ -19,7 +19,7 @@ authors = [
   { name="andywar65", email="andy.war1965@gmail.com" },
 ]
 description = "Django interface to Opalstack python API"
-readme = "README.md"
+readme = "README.rst"
 license = {file = "LICENSE"}
 classifiers = [
     "Operating System :: OS Independent",
