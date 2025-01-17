@@ -1,0 +1,2 @@
+recursive-include src/django_opalstack/static *
+recursive-include src/django_opalstack/templates *
